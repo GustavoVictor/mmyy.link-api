@@ -29,7 +29,7 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    [AllowAnonymous, HttpGet("{nickName}")]
+    [HttpGet("{nickName}"), AllowAnonymous]
     public async Task<IActionResult> GetUser(string nickName){
         if (nickName.Length == 0)
             throw new ErrorException(ErrorCode.UserInvalidUserNickIsEmpty);
@@ -38,7 +38,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPost("cards")]
-    [Authorize(Roles = "USER, ADMIN")]
+    [Authorize(Roles = "USER")]
     public async Task<IActionResult> AddCard(AddCardDto card){
         string userId = User.Claims.ElementAt(0).Value;
 
