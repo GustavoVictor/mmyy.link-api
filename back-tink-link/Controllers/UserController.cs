@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.IdentityModel.Tokens.Jwt;
 
-[AllowAnonymous, ApiController]
+[ApiController]
 [Route("api/v1/user")]
 public class UserController : ControllerBase
 {
@@ -29,14 +29,20 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
-    [HttpGet("{nickName}")]
+    [AllowAnonymous, HttpGet("{nickName}")]
     public async Task<IActionResult> GetUser(string nickName){
+        if (nickName.Length == 0)
+            throw new ErrorException(ErrorCode.UserInvalidUserNickIsEmpty);
+
         return Ok(await _userService.GetUser(nickName));
     }
 
-    [HttpPost("{id}/cards")]
-    public async Task<IActionResult> AddCard(string id, AddCardDto card){
-        return Ok(await _userService.AddCard(id, card));
+    [HttpPost("cards")]
+    [Authorize(Roles = "USER, ADMIN")]
+    public async Task<IActionResult> AddCard(AddCardDto card){
+        string userId = User.Claims.ElementAt(0).Value;
+
+        return Ok(await _userService.AddCard(userId, card));
     }
 
     // [HttpPost("validate-code")]

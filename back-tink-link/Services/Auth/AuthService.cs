@@ -28,6 +28,7 @@ public class AuthService
             {
                 new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.Name),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.NickName),
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email)
             };
@@ -35,7 +36,7 @@ public class AuthService
             var userRoles = user.Roles.Split("|");
 
             foreach (var role in userRoles)
-                _claims.Add(new Claim(ClaimTypes.Role, role));
+                _claims.Add(new Claim("roles", role));
 
             var token = new JwtSecurityToken(
                 issuer: null,

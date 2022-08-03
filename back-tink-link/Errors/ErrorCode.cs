@@ -124,6 +124,8 @@ public readonly struct ErrorCode : IEquatable<ErrorCode>
     public static readonly ErrorCode UserNickNameIsAlreadyInUse = new ErrorCode(400, "EC1201", "The nickname is already in use!");
     public static readonly ErrorCode UserInvalidUser = new ErrorCode(400, "EC1202", "Invalid user!");
     public static readonly ErrorCode UserInvalidUserName = new ErrorCode(400, "EC1202", "Invalid user name!");
+    public static readonly ErrorCode UserInvalidUserNickName = new ErrorCode(400, "EC1202", "Invalid user nickname!");
+    public static readonly ErrorCode UserInvalidUserNickIsEmpty = new ErrorCode(400, "EC1202", "User nickname is empty!");
     public static readonly ErrorCode UserInvalidUserLastName = new ErrorCode(400, "EC1202", "Invalid user last name!");
     public static readonly ErrorCode UserInvalidUserEmail = new ErrorCode(400, "EC1202", "Invalid user email!");
     public static readonly ErrorCode UserInvalidUserPassword = new ErrorCode(400, "EC1202", "Invalid user password!");

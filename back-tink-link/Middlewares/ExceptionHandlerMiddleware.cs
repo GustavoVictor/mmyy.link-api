@@ -4,7 +4,7 @@ using System.Net;
 
 public static class ExceptionHandlerMiddleware
 {
-    public static void InvokeExceptionHandler(this IApplicationBuilder app)
+    public static void InvokeExceptionHandlerLocal(this IApplicationBuilder app)
     {
         app.Use(async (context, next) =>
         {
@@ -21,14 +21,14 @@ public static class ExceptionHandlerMiddleware
 
     private static Task HandleExceptionAsync(HttpContext context, Exception ex)
     {
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-
         var error = ex switch 
         {
             ErrorException err => err.ErrorCode,
             _ => ErrorCode.InternalServerError
         };
+
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = error.Status;
 
         return context.Response.WriteAsync(SerializeToJson(error));
     }

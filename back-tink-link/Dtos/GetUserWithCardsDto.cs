@@ -8,5 +8,5 @@ public struct GetUserWithCardsDto
 
     public string Email { get; set; }
 
-    public GetCardDto[] Cards;
+    public GetCardDto[] Cards { get; set; }
 }

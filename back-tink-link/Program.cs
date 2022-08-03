@@ -41,6 +41,48 @@ builder.Services.AddScoped<UserService>();
 //Repositories
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+builder.Services.AddLogging(loggingBuilder => {
+	loggingBuilder.AddFile("all_requests_{0:yyyy}-{0:MM}-{0:dd}_0.log", fileLoggerOpt => {
+        fileLoggerOpt.FormatLogFileName = fname => {
+            return String.Format(fname, DateTime.UtcNow);
+        };
+
+        fileLoggerOpt.Append = true;
+        fileLoggerOpt.MinLevel = LogLevel.Information;
+        fileLoggerOpt.FileSizeLimitBytes = 1000000;
+        fileLoggerOpt.MaxRollingFiles = 3;
+
+        fileLoggerOpt.HandleFileError = (err) => {
+		    err.UseNewLogFileName(Path.GetFileNameWithoutExtension(err.LogFileName)+ "_alt" + Path.GetExtension(err.LogFileName) );
+	    };
+
+        fileLoggerOpt.FilterLogEntry = (msg) => {
+            return msg.LogLevel == LogLevel.Information && msg.LogName == "all_requests";;
+        };
+    });
+});
+
+builder.Services.AddLogging(loggingBuilder => {
+	loggingBuilder.AddFile("logged_user_requests_{0:yyyy}-{0:MM}-{0:dd}_0.log", fileLoggerOpt => {
+        fileLoggerOpt.FormatLogFileName = fname => {
+            return String.Format(fname, DateTime.UtcNow);
+        };
+
+        fileLoggerOpt.Append = true;
+        fileLoggerOpt.MinLevel = LogLevel.Information;
+        fileLoggerOpt.FileSizeLimitBytes = 1000000;
+        fileLoggerOpt.MaxRollingFiles = 5;
+
+        fileLoggerOpt.HandleFileError = (err) => {
+		    err.UseNewLogFileName(Path.GetFileNameWithoutExtension(err.LogFileName)+ "_alt" + Path.GetExtension(err.LogFileName) );
+	    };
+
+        fileLoggerOpt.FilterLogEntry = (msg) => {
+            return msg.LogLevel == LogLevel.Information && msg.LogName == "logged_user_requests";
+        };
+    });
+});
+
 var app = builder.Build();
 
 // migrate any database changes on startup (includes initial db creation)
@@ -69,28 +111,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<HttpLoggingMiddleware>();
+app.InvokeExceptionHandlerLocal();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseMiddleware<HttpLoggingMiddleware>();
+app.MapControllers();
 
-//Initialize Logger
-Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
-    .CreateLogger();
-
-try
-{
-    Log.Information("Application Starting");
-    app.Run();
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "The Application failed to start.");
-}
-finally
-{
-    Log.CloseAndFlush();
-}
+Log.Information("Application Starting");
+app.Run();
+    

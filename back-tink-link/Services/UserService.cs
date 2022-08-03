@@ -49,6 +49,7 @@ public class UserService
 
         User _user = new User
         {
+            NickName = user.NickName,
             Name = user.FirstName,
             LastName = user.LastName,
             Email = user.Email,
@@ -72,6 +73,9 @@ public class UserService
     {
         if (user == null)
             throw new ErrorException(ErrorCode.UserInvalidUser);
+
+        if (string.IsNullOrEmpty(user.NickName))
+            throw new ErrorException(ErrorCode.UserInvalidUserNickName);
 
         if (string.IsNullOrEmpty(user.FirstName))
             throw new ErrorException(ErrorCode.UserInvalidUserName);
@@ -108,7 +112,7 @@ public class UserService
 
     public async Task<GetUserWithCardsDto> GetUser(string nickName)
     {
-        var user = await _userRepository.GetAsync(wh => wh.Name == nickName, x => x.Include(i => i.Cards));
+        var user = await _userRepository.GetAsync(wh => wh.NickName == nickName, x => x.Include(i => i.Cards));
 
         if (user == null)
             throw new ErrorException(ErrorCode.UserNotFound);
