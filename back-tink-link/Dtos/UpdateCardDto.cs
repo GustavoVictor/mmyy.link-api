@@ -1,4 +1,4 @@
-public struct GetCardDto
+public struct UpdateCardDto
 {
     public Guid Id { get; set; }
     

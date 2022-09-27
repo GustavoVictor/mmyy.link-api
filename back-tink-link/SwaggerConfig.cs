@@ -11,7 +11,7 @@ public static class SwaggerConfig
                 {
                     Title = "API tink-links",
                     Version = "v1",
-                    Description = "API REST desenvolvida com ASP .NET 6 para o projeto <b>[CAM]</b>",
+                    Description = "API REST desenvolvida com ASP .NET 6 para o projeto <b>Tinklinks</b>",
                     Contact = new OpenApiContact
                     {
                         Name = "N33 Software",

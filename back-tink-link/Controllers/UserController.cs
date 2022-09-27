@@ -45,6 +45,13 @@ public class UserController : ControllerBase
         return Ok(await _userService.AddCard(userId, card));
     }
 
+    [HttpPut("cards")]
+    [Authorize(Roles = "USER")]
+    public async Task<IActionResult> UpdateCard(UpdateCardDto card){
+        string userId = User.Claims.ElementAt(0).Value;
+
+        return Ok(await _userService.UpdateCard(userId, card));
+    }
     // [HttpPost("validate-code")]
     // public async Task<IActionResult> ValidateCode(int code)
     // {

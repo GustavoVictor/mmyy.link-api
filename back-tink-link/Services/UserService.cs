@@ -129,6 +129,7 @@ public class UserService
 
             var cardDto = new GetCardDto
             {
+                Id = card.Id,
                 Index = card.Index,
                 Group = card.Group,
                 Icon = card.Icon,
@@ -149,20 +150,54 @@ public class UserService
         };
     }
 
-    public async Task<Card> AddCard(string userId, AddCardDto cardDto){
-        
+    public async Task<GetCardDto> AddCard(string userId, AddCardDto addCardDto)
+    {
         if (!Guid.TryParse(userId, out Guid parsedUserId))
             throw new ErrorException(ErrorCode.UserNotFound);
         
         var card = new Card{
-            Index = cardDto.Index,
-            Group = cardDto.Group,
-            Icon = cardDto.Icon,
-            Description = cardDto.Description,
-            URL = cardDto.URL,
+            Index = addCardDto.Index,
+            Group = addCardDto.Group,
+            Icon = addCardDto.Icon,
+            Description = addCardDto.Description,
+            URL = addCardDto.URL,
             UserId = parsedUserId
         };
 
-        return await _cardRepository.CreateAsync(card);
+        Card createdCard = await _cardRepository.CreateAsync(card);
+
+        var cardDto = new GetCardDto
+        {
+            Id = createdCard.Id,
+            Index = createdCard.Index,
+            Group = createdCard.Group,
+            Icon = createdCard.Icon,
+            Description = createdCard.Description,
+            URL = createdCard.URL
+        };
+
+        return cardDto;
+    }
+
+    public async Task<bool> UpdateCard(string userId, UpdateCardDto updateCardDto)
+    {
+        
+        if (!Guid.TryParse(userId, out Guid parsedUserId))
+            throw new ErrorException(ErrorCode.UserNotFound);
+        
+        var card = new Card
+        {
+            Id = updateCardDto.Id,
+            Index = updateCardDto.Index,
+            Group = updateCardDto.Group,
+            Icon = updateCardDto.Icon,
+            Description = updateCardDto.Description,
+            URL = updateCardDto.URL,
+            UserId = parsedUserId
+        };
+
+        bool createdCard = await _cardRepository.UpdateAsync(card);
+
+        return createdCard;
     }
 }
