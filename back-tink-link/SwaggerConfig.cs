@@ -17,7 +17,7 @@ public static class SwaggerConfig
                         Name = "N33 Software",
                     }
                 });
-
+            
             var _security = new OpenApiSecurityRequirement();
 
             _security.Add(new OpenApiSecurityScheme { BearerFormat = "Bearer {}" }, new string[] { });

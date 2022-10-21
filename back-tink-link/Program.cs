@@ -21,8 +21,16 @@ else
         options.UseSqlite(_connection);
     });
 }
-
-builder.Services.AddCors();
+var allowSpecificOrigins = "_allowSpecificOrigins";
+builder.Services.AddCors(options => 
+{
+    options.AddPolicy(name: allowSpecificOrigins,
+                        policy => {
+                            policy.WithOrigins("http://localhost:5173");
+                            policy.WithMethods("GET", "POST", "OPTIONS", "PUT", "PATCH", "DELETE");
+                            policy.AllowAnyHeader();
+                        });
+});
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -78,12 +86,6 @@ var app = builder.Build();
 //     }
 // }
 
-// global cors policy
-app.UseCors(x => x
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader());
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -95,6 +97,9 @@ app.UseMiddleware<HttpLoggingMiddleware>();
 app.InvokeExceptionHandlerLocal();
 
 app.UseHttpsRedirection();
+
+// global cors policy
+app.UseCors(allowSpecificOrigins);
 
 app.UseAuthentication();
 app.UseAuthorization();
