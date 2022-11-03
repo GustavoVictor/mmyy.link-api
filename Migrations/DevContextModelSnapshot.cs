@@ -66,6 +66,12 @@ namespace back_tink_link.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("BackgroundColor")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BackgroundImage")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT")
@@ -105,6 +111,9 @@ namespace back_tink_link.Migrations
                     b.Property<string>("Roles")
                         .IsRequired()
                         .HasMaxLength(1200)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Summary")
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("ValidatedEmail")

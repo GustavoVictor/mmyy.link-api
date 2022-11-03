@@ -69,6 +69,17 @@ public class UserService
         return token;
     }
 
+    public async Task<bool> UpdateSummary(string userId, string summary){
+        if (string.IsNullOrEmpty(summary))
+            throw new ErrorException(ErrorCode.UserInvalidUserSummary);
+
+        User user = _userRepository.Find(wh => wh.Id == Guid.Parse(userId));
+
+        user.Summary = summary;
+
+        return await _userRepository.UpdateAsync(user);
+    }
+
     private void ValidateUser(CreateUserViewModel user)
     {
         if (user == null)
@@ -88,6 +99,24 @@ public class UserService
 
         if (string.IsNullOrEmpty(user.Password))
             throw new ErrorException(ErrorCode.UserInvalidUserPassword);
+    }
+
+    private void ValidateUser(UpdateUserViewModel user)
+    {
+        if (user == null)
+            throw new ErrorException(ErrorCode.UserInvalidUser);
+
+        if (string.IsNullOrEmpty(user.NickName))
+            throw new ErrorException(ErrorCode.UserInvalidUserNickName);
+
+        if (string.IsNullOrEmpty(user.FirstName))
+            throw new ErrorException(ErrorCode.UserInvalidUserName);
+
+        if (string.IsNullOrEmpty(user.LastName))
+            throw new ErrorException(ErrorCode.UserInvalidUserLastName);
+
+        if (string.IsNullOrEmpty(user.Email))
+            throw new ErrorException(ErrorCode.UserInvalidUserEmail);
     }
 
     public async Task<dynamic> ValidateCode(Guid userId, int code)
@@ -124,7 +153,7 @@ public class UserService
     {   
         var cardsDto = new GetCardDto[user.Cards.Count];
 
-        for(int i = 0; i < user.Cards.Count; i++){
+        for(int i = 0; i < cardsDto.Length; i++){
             var card = user.Cards[i];
 
             var cardDto = new GetCardDto
@@ -145,6 +174,9 @@ public class UserService
             Name = user.Name,
             NickName = user.NickName,
             LastName = user.LastName,
+            Summary = user.Summary,
+            BackgroundColor = user.BackgroundColor,
+            BackgroundImage = user.BackgroundImage,
             Email = user.Email,
             Cards = cardsDto
         };

@@ -130,6 +130,7 @@ public readonly struct ErrorCode : IEquatable<ErrorCode>
     public static readonly ErrorCode UserInvalidUserEmail = new ErrorCode(400, "EC1202", "Invalid user email!");
     public static readonly ErrorCode UserInvalidUserPassword = new ErrorCode(400, "EC1202", "Invalid user password!");
     public static readonly ErrorCode UserTheCodeIsNotValid = new ErrorCode(400, "EC1203", "The code is not valid!");
+    public static readonly ErrorCode UserInvalidUserSummary = new ErrorCode(400, "EC1204", "Your summary is empty.");
     public static readonly ErrorCode UserErroWhileUpdating = new ErrorCode(500, "EC1204", "Error while updating.");
 
     // Groups

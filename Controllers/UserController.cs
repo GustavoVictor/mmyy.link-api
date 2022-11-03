@@ -29,6 +29,14 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    [HttpPut("summary")]
+    [Authorize(Roles = "USER")]
+    public async Task<IActionResult> UpdateSummary(string summary){
+        string userId = User.Claims.ElementAt(0).Value;
+
+        return Ok(await _userService.UpdateSummary(userId, summary));
+    }
+
     [HttpGet("{nickName}"), AllowAnonymous]
     public async Task<IActionResult> GetUser(string nickName){
         if (nickName.Length == 0)
