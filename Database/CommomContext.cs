@@ -32,6 +32,7 @@ public class CommomContext : DbContext
         modelBuilder.Entity<Card>().Property(card => card.Icon).HasMaxLength(70).IsRequired(false);
         modelBuilder.Entity<Card>().Property(card => card.Group).HasMaxLength(70).IsRequired(false);
         modelBuilder.Entity<Card>().Property(card => card.Description).HasMaxLength(200);
+        modelBuilder.Entity<Card>().Property(card => card.Social);
         modelBuilder.Entity<Card>().Property(card => card.URL).HasMaxLength(800);
         modelBuilder.Entity<Card>().HasOne<User>(card => card.User).WithMany(user => user.Cards).HasForeignKey(card => card.UserId);
 

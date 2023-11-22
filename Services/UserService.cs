@@ -163,7 +163,8 @@ public class UserService
                 Group = card.Group,
                 Icon = card.Icon,
                 Description = card.Description,
-                URL = card.URL
+                URL = card.URL,
+                Social = card.Social
             };
 
             cardsDto[i] = cardDto;
@@ -192,6 +193,7 @@ public class UserService
             Group = addCardDto.Group,
             Icon = addCardDto.Icon,
             Description = addCardDto.Description,
+            Social = addCardDto.Social,
             URL = addCardDto.URL,
             UserId = parsedUserId
         };
@@ -205,6 +207,7 @@ public class UserService
             Group = createdCard.Group,
             Icon = createdCard.Icon,
             Description = createdCard.Description,
+            Social = createdCard.Social,
             URL = createdCard.URL
         };
 
@@ -224,6 +227,7 @@ public class UserService
             Group = updateCardDto.Group,
             Icon = updateCardDto.Icon,
             Description = updateCardDto.Description,
+            Social = updateCardDto.Social,
             URL = updateCardDto.URL,
             UserId = parsedUserId
         };

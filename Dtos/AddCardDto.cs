@@ -9,4 +9,6 @@ public struct AddCardDto
     public string Description { get; set; }
 
     public string URL { get; set; }
+
+    public bool Social { get; set; }
 }

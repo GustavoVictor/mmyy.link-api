@@ -32,7 +32,7 @@ builder.Services.AddCors(options =>
                         });
 });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(); //É para mapear as controllers e os seus métodos quando ta subindo o servidor.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();
 builder.Services.AddHealthChecks();
@@ -51,14 +51,14 @@ builder.Services.AddJWT(builder.Configuration);
 
 
 builder.Services.AddLogging(loggingBuilder => {
-	loggingBuilder.AddFile("log_requests_{0:yyyy}-{0:MM}-{0:dd}_0.log", fileLoggerOpt => {
+	loggingBuilder.AddFile( "log_requests_{0:yyyy}-{0:MM}-{0:dd}_0.log", fileLoggerOpt => {
         fileLoggerOpt.FormatLogFileName = fname => {
             return String.Format(fname, DateTime.UtcNow);
         };
 
         fileLoggerOpt.Append = true;
         fileLoggerOpt.MinLevel = LogLevel.Information;
-        fileLoggerOpt.FileSizeLimitBytes = 1000000;
+        fileLoggerOpt.FileSizeLimitBytes = 50000000;
         fileLoggerOpt.MaxRollingFiles = 3;
 
         fileLoggerOpt.HandleFileError = (err) => {

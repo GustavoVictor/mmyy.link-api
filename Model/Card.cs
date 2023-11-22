@@ -9,6 +9,8 @@ public class Card : Entity
     public string Description { get; set; }
 
     public string URL { get; set; }
+    
+    public bool Social { get; set; }
 
     public Guid UserId { get; set; }
 
