@@ -21,18 +21,15 @@ else
         options.UseSqlite(_connection);
     });
 }
-var allowSpecificOrigins = "_allowSpecificOrigins";
-builder.Services.AddCors(options => 
-{
-    options.AddPolicy(name: allowSpecificOrigins,
-                        policy => {
-                            policy.WithOrigins("http://localhost:5173");
-                            policy.WithMethods("GET", "POST", "OPTIONS", "PUT", "PATCH", "DELETE");
-                            policy.AllowAnyHeader();
-                        });
-});
 
-builder.Services.AddControllers(); //É para mapear as controllers e os seus métodos quando ta subindo o servidor.
+var allowSpecificOrigins = "_allowSpecificOrigins";
+builder.Services.AddCors(options => options.AddPolicy(name: allowSpecificOrigins, policy => {
+                            policy.WithOrigins("http://localhost:5173")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();                            
+                        }));
+
+builder.Services.AddControllers(); 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwagger();
 builder.Services.AddHealthChecks();
@@ -51,7 +48,7 @@ builder.Services.AddJWT(builder.Configuration);
 
 
 builder.Services.AddLogging(loggingBuilder => {
-	loggingBuilder.AddFile( "log_requests_{0:yyyy}-{0:MM}-{0:dd}_0.log", fileLoggerOpt => {
+	loggingBuilder.AddFile( @"C:\Logs\tink-link\log_requests_{0:yyyy}-{0:MM}-{0:dd}_0.log", fileLoggerOpt => {
         fileLoggerOpt.FormatLogFileName = fname => {
             return String.Format(fname, DateTime.UtcNow);
         };
@@ -95,8 +92,6 @@ if (app.Environment.IsDevelopment())
 
 app.UseMiddleware<HttpLoggingMiddleware>();
 app.InvokeExceptionHandlerLocal();
-
-app.UseHttpsRedirection();
 
 // global cors policy
 app.UseCors(allowSpecificOrigins);

@@ -48,7 +48,7 @@ public class HttpLoggingMiddleware
             context.Response.Body.Seek(0, SeekOrigin.Begin);
             var respBody = await new StreamReader(context.Response.Body).ReadToEndAsync();
             context.Response.Body.Seek(0, SeekOrigin.Begin);
-
+            
             _loggerRequests.LogInformation($"RESPONSE - " 
                                             + (hasUserAuthenticated ? $"AUTH_USER: {context.User.Claims.ElementAt(0).Value} " : "")
                                             + $"BODY:{respBody}");
