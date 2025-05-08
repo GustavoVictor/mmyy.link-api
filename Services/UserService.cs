@@ -74,7 +74,11 @@ public class UserService
             throw new ErrorException(ErrorCode.UserInvalidUserSummary);
 
         User user = _userRepository.Find(wh => wh.Id == Guid.Parse(userId));
-
+        if(user is null)
+        {
+            throw new ErrorException(ErrorCode.UserNotFound);
+        }
+        
         user.Summary = summary;
 
         return await _userRepository.UpdateAsync(user);
